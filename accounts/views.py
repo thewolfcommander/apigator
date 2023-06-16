@@ -10,7 +10,10 @@ from django.views.generic import FormView
 from django.views.generic.edit import UpdateView
 
 from .forms import UserAccountUpdateForm, UserLoginForm, UserRegisterForm
+from .models import AccountIntegration, GPTIntegration
 from .mixins import UnauthenticatedUserMixin
+
+import json
 
 
 class LogoutView(LoginRequiredMixin, View):
@@ -52,9 +55,42 @@ class UserAccountUpdateView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['github_connected'] = SocialAccount.objects.filter(user=self.request.user, provider='github').exists()
+
+        integration_query = AccountIntegration.objects.filter(user=self.request.user)
+
+        if integration_query.exists():
+            context['integration_exists'] = True
+
+            if integration_query.first().gpt_integration:
+                context['gpt_integration_key'] = integration_query.first().gpt_integration.key
+        else:
+            context['integration_exists'] = False
         return context
 
 
-class ConnectGithubView(View):
+class ConnectGithubView(LoginRequiredMixin, View):
     def get(self, request):
         return redirect('socialaccount_connections')  # This is the url name for the Django AllAuth connections view
+    
+
+class UpdateIntegrationView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        key = request.POST.get("key")
+        integration_query = AccountIntegration.objects.filter(user=self.request.user)
+        if integration_query.exists():
+            integration_obj = integration_query.first()
+        else:
+            integration_obj = AccountIntegration.objects.create(user=self.request.user)
+
+        if integration_obj.gpt_integration:
+            integration_obj.gpt_integration.key = key
+            integration_obj.gpt_integration.save()
+
+            # create activity
+            # activity = json.loads(integration_obj.activity
+        else:
+            gpt_integration = GPTIntegration.objects.create(key=key)
+            integration_obj.gpt_integration = gpt_integration
+            integration_obj.save()
+
+        return redirect('accounts:my_account')

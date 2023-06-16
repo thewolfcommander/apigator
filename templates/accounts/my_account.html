@@ -9,7 +9,7 @@
         {{ form|crispy }}
         <button type="submit" class="btn btn-primary">Save</button>
     </form>
-    <hr>
+    <hr class="my-4">
     <h3>Connected Accounts</h3>
     {% if github_connected %}
         <p>Github: Connected</p>
@@ -18,5 +18,18 @@
             <i class="fab fa-github"></i> Connect GitHub Now
           </a></p>
     {% endif %}
+    <hr class="my-4">
+    <h3>Integrations</h3>
+    <form method="post" name='gpt_integration_key_form' action="{% url 'accounts:update_integration' %}">
+        {% csrf_token %}
+        <label for='gpt_integration_key'>Enter GPT Integration Key</label>
+        {% if integration_exists %}
+            <input name='key' type='text' id='gpt_integration_key' value="{{ gpt_integration_key }}">
+            <button type='submit'>Update Integration</button>
+        {% else %}
+            <input name='key' type='text' id='gpt_integration_key'>
+            <button type='submit'>Create Integration</button>
+        {% endif %}
+    </form>
 </div>
 {% endblock %}
