@@ -18,7 +18,11 @@
   <body class="d-flex flex-column min-vh-100">
 
     {% comment %} Navigation bar {% endcomment %}
-    {% include 'components/navigation/TopNavigationUnauthenticated.html' %}
+    {% if request.user.is_authenticated %}
+      {% include 'components/navigation/TopNavigationAuthenticated.html' %}
+    {% else %}
+      {% include 'components/navigation/TopNavigationUnauthenticated.html' %}
+    {% endif %}
 
     <div class="container-fluid mb-auto">
         {% block content %}{% endblock content %}
