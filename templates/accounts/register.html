@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block page_title %}
-Login
+Create new account
 {% endblock page_title %}
 
 {% block content %}
@@ -10,13 +10,13 @@ Login
     <div class="col-md-6">
       <div class="card mt-5">
         <div class="card-header">
-          <h3>Login</h3>
+          <h3>Create new account</h3>
         </div>
         <div class="card-body">
-          {% include 'components/forms/login_form.html' %}
+          {% include 'components/forms/registration_form.html' %}
         </div>
         <div class="card-footer">
-          <p>Don't have an account yet? <a href="{% url 'accounts:register' %}">Register now</a></p>
+          <p>Registered Already <a href="{% url 'accounts:login' %}">Login here</a></p>
         </div>
       </div>
     </div>
