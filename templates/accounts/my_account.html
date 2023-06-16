@@ -14,7 +14,9 @@
     {% if github_connected %}
         <p>Github: Connected</p>
     {% else %}
-        <p>Github: Not Connected</p>
+        <p class="mt-4">Github: <a href="{% url 'accounts:connect_github' %}" class="btn btn-dark ml-5">
+            <i class="fab fa-github"></i> Connect GitHub Now
+          </a></p>
     {% endif %}
 </div>
 {% endblock %}

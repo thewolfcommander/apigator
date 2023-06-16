@@ -53,3 +53,8 @@ class UserAccountUpdateView(LoginRequiredMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         context['github_connected'] = SocialAccount.objects.filter(user=self.request.user, provider='github').exists()
         return context
+
+
+class ConnectGithubView(View):
+    def get(self, request):
+        return redirect('socialaccount_connections')  # This is the url name for the Django AllAuth connections view

@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.github',
     'crispy_forms',
     'crispy_bootstrap4',
+    'rest_framework',
 
     # my own apps
     'accounts',
