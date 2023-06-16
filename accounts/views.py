@@ -1,12 +1,15 @@
+from allauth.socialaccount.models import SocialAccount
 from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views import View
-from django.contrib.auth.mixins import LoginRequiredMixin
-
 from django.views.generic import FormView
+from django.views.generic.edit import UpdateView
 
-from .forms import UserLoginForm, UserRegisterForm
+from .forms import UserAccountUpdateForm, UserLoginForm, UserRegisterForm
 from .mixins import UnauthenticatedUserMixin
 
 
@@ -35,3 +38,18 @@ class UserRegisterView(UnauthenticatedUserMixin, FormView):
         user = form.save()
         login(self.request, user)
         return super().form_valid(form)
+
+
+class UserAccountUpdateView(LoginRequiredMixin, UpdateView):
+    model = User
+    form_class = UserAccountUpdateForm
+    template_name = 'accounts/my_account.html'
+    success_url = reverse_lazy('accounts:my_account')
+
+    def get_object(self):
+        return self.request.user
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['github_connected'] = SocialAccount.objects.filter(user=self.request.user, provider='github').exists()
+        return context

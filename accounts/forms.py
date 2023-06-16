@@ -24,3 +24,13 @@ class UserRegisterForm(UserCreationForm):
         model = User
         fields = ['username', 'email', 'password1', 'password2']
 
+
+class UserAccountUpdateForm(forms.ModelForm):
+    username = forms.CharField(max_length=30, disabled=True)
+    email = forms.EmailField(disabled=False)
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name']
+
+

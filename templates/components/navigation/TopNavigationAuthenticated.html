@@ -1,7 +1,7 @@
 {% block top_navigation %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container">
-    <a class="navbar-brand" href="#">APIGator</a>
+    <a class="navbar-brand" href="{% url 'core:home' %}">APIGator</a>
     <button
       class="navbar-toggler"
       type="button"
@@ -13,14 +13,20 @@
     >
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div
-      class="collapse navbar-collapse justify-content-end"
-      id="navbarNavAltMarkup"
-    >
-      <div class="navbar-nav">
-        <a class="nav-item nav-link" href="{% url 'accounts:logout' %}">{{ request.user.username }}</a>
-      </div>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+        <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{ request.user.username }}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="{% url 'accounts:my_account' %}"><i class="fas fa-user"></i> My account</a>
+                    <a class="dropdown-item" href="{% url 'accounts:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </li>
+        </ul>
     </div>
+    
   </div>
 </nav>
 {% endblock top_navigation %}
