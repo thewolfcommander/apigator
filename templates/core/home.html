@@ -6,4 +6,18 @@ Home
 
 {% block content %}
 
+{% if integration %}
+    {% if authorized %}
+    Authorized Successfully
+    {% else %}
+    <div class="alert alert-danger" role="alert">
+        {{ authorization_error_message }}
+    </div>  
+    {% endif %}
+{% else %}
+    <div class="alert alert-danger" role="alert">
+        {{ integration_error_message }} Please Go to <a href="{% url 'accounts:my_account' %}">My Account</a> page, to complete integration.
+    </div>  
+{% endif %}
+
 {% endblock content %}

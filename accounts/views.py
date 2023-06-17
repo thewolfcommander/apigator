@@ -63,6 +63,7 @@ class UserAccountUpdateView(LoginRequiredMixin, UpdateView):
 
             if integration_query.first().gpt_integration:
                 context['gpt_integration_key'] = integration_query.first().gpt_integration.key
+                context['organization_id'] = integration_query.first().gpt_integration.organization_id
         else:
             context['integration_exists'] = False
         return context
@@ -76,6 +77,7 @@ class ConnectGithubView(LoginRequiredMixin, View):
 class UpdateIntegrationView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         key = request.POST.get("key")
+        organization_id = request.POST.get('org_id')
         integration_query = AccountIntegration.objects.filter(user=self.request.user)
         if integration_query.exists():
             integration_obj = integration_query.first()
@@ -84,12 +86,13 @@ class UpdateIntegrationView(LoginRequiredMixin, View):
 
         if integration_obj.gpt_integration:
             integration_obj.gpt_integration.key = key
+            integration_obj.gpt_integration.organization_id = organization_id
             integration_obj.gpt_integration.save()
 
             # create activity
             # activity = json.loads(integration_obj.activity
         else:
-            gpt_integration = GPTIntegration.objects.create(key=key)
+            gpt_integration = GPTIntegration.objects.create(key=key, organization_id=organization_id)
             integration_obj.gpt_integration = gpt_integration
             integration_obj.save()
 

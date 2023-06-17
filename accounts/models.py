@@ -7,6 +7,7 @@ class GPTIntegration(models.Model):
     GPT integration for user
     """
     key = models.TextField(null=False, blank=False, help_text='GPT integration')
+    organization_id = models.TextField(null=True, blank=True, help_text='GPT Organization ID')
     created_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
     updated_at = models.DateTimeField(auto_now=True)

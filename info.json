@@ -1,0 +1,4 @@
+{
+    "openai_started": "Authorization Process started for OpenAI",
+    "openai_completed": "Authorization Process completed for OpenAI"
+}

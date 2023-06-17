@@ -1,0 +1,3 @@
+{
+    "error_connecting_openai": "Something happened in connecting with the OpenAI. Please check API keys"
+}
