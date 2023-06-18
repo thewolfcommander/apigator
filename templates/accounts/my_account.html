@@ -12,7 +12,7 @@
     <hr class="my-4">
     <h3>Connected Accounts</h3>
     {% if github_connected %}
-        <p>Github: Connected</p>
+        <p>Github: Connected <br />  <a href="{% url 'accounts:disconnect_github' %}" class="btn btn-warning mt-3">Disconnect GitHub</a></p>
     {% else %}
         <p class="mt-4">Github: <a href="{% url 'accounts:connect_github' %}" class="btn btn-dark ml-5">
             <i class="fab fa-github"></i> Connect GitHub Now

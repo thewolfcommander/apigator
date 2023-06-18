@@ -1,4 +1,5 @@
 {
     "openai_started": "Authorization Process started for OpenAI",
-    "openai_completed": "Authorization Process completed for OpenAI"
+    "openai_completed": "Authorization Process completed for OpenAI",
+    "github_token_info": "GitHub User Social Account Token"
 }

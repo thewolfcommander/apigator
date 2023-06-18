@@ -13,6 +13,8 @@ from .forms import UserAccountUpdateForm, UserLoginForm, UserRegisterForm
 from .models import AccountIntegration, GPTIntegration
 from .mixins import UnauthenticatedUserMixin
 
+from apigator.utils.logger import log_info, log_custom_error
+
 import json
 
 
@@ -73,6 +75,25 @@ class ConnectGithubView(LoginRequiredMixin, View):
     def get(self, request):
         return redirect('socialaccount_connections')  # This is the url name for the Django AllAuth connections view
     
+
+class DisconnectGithubAccount(View):
+    def get(self, request):
+        try:
+            user = User.objects.get(id=request.user.id)
+            social_account = SocialAccount.objects.get(user=user, provider='github')
+            social_account.delete()
+
+            user.github_account_linked = False
+            user.save()
+
+            return redirect('accounts:my_account')
+
+        except SocialAccount.DoesNotExist:
+            return redirect('accounts:my_account')
+
+        except Exception as e:
+            return redirect('accounts:my_account')
+
 
 class UpdateIntegrationView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):

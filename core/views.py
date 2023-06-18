@@ -5,9 +5,11 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.views import View
 
+from allauth.socialaccount.models import SocialApp, SocialToken, SocialAccount
+
 from accounts.models import *
 
-from apigator.utils import gpt_requestor, git_manager, social
+from apigator.utils import gpt_requestor, git_manager, social, logger
 
 # Create your views here.
 @login_required(login_url='accounts:login')
@@ -40,10 +42,12 @@ def home(request):
 
 class CreateGitHubRepo(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
-        access_token = social.get_user_github_token(request.user)
         repo_name = request.POST.get('repo_name')
         repo_description = request.POST.get('repo_description')
 
-        github_manager = git_manager.GithubManager(access_token, repo_name, repo_description)
-        github_manager.create_github_repo()
+        # authenticate github to get access_token
+
+        # social_token = social.get_user_github_token(request.user)
+        # github_manager = git_manager.GithubManager(access_token, repo_name, repo_description)
+        # github_manager.create_github_repo()
         return redirect('core:home')

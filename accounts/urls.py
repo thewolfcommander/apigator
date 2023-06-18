@@ -9,6 +9,7 @@ urlpatterns = [
     path('logout/', views.LogoutView.as_view(), name="logout"),
     path('login/', views.UserLoginView.as_view(), name="login"),
     path('connect-github/', views.ConnectGithubView.as_view(), name='connect_github'),
+    path('disconnect-github/', views.DisconnectGithubAccount.as_view(), name='disconnect_github'),
     path('my_account/', views.UserAccountUpdateView.as_view(), name='my_account'),
     path('register/', views.UserRegisterView.as_view(), name="register"),
     path('update-integration/', views.UpdateIntegrationView.as_view(), name='update_integration'),
