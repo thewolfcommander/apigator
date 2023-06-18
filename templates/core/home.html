@@ -6,18 +6,33 @@ Home
 
 {% block content %}
 
+<div class="container pt-5">
 {% if integration %}
     {% if authorized %}
-    Authorized Successfully
+    <h3>Create Github Repo</h3>
+    <hr />
+    <form method="post" name='create_github_repo_form' action="{% url 'core:github_create_repo' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for='github_repo_name'>Enter Github Repo Name</label>
+            <input class="form-control" name='github_repo_name' type='text' id='github_repo_name'>
+        </div>
+        <div class="form-group">
+            <label for='github_repo_desc'>Enter Repo Description</label>
+            <input class="form-control" name='github_repo_desc' type='text' id='github_repo_desc'>
+        </div>
+        <button class="btn btn-primary" type='submit'>Update Integration</button>
+    </form>   
     {% else %}
     <div class="alert alert-danger" role="alert">
         {{ authorization_error_message }}
     </div>  
     {% endif %}
-{% else %}
+    {% else %}
     <div class="alert alert-danger" role="alert">
         {{ integration_error_message }} Please Go to <a href="{% url 'accounts:my_account' %}">My Account</a> page, to complete integration.
     </div>  
 {% endif %}
+</div>
 
 {% endblock content %}

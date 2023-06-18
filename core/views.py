@@ -1,9 +1,13 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
+from django.shortcuts import redirect
+from django.views import View
 
 from accounts.models import *
 
-from apigator.utils import gpt_requestor
+from apigator.utils import gpt_requestor, git_manager, social
 
 # Create your views here.
 @login_required(login_url='accounts:login')
@@ -32,3 +36,14 @@ def home(request):
         context['integration_error_message'] = 'You have not integrated GPT yet.'
 
     return render(request, 'core/home.html', context)
+
+
+class CreateGitHubRepo(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        access_token = social.get_user_github_token(request.user)
+        repo_name = request.POST.get('repo_name')
+        repo_description = request.POST.get('repo_description')
+
+        github_manager = git_manager.GithubManager(access_token, repo_name, repo_description)
+        github_manager.create_github_repo()
+        return redirect('core:home')
